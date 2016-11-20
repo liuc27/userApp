@@ -1,0 +1,131 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>ShopDetails Page</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content  #popoverContent class="shopDetails">
+
+  <ion-card class="adv-map">
+    <img [src]=shop.creatorImageURL>
+
+    <a class="fab-favorite" (tap)="likeCreator(shop)">
+      <ion-icon name='heart-outline' [hidden]='alreadyLikedCreator(shop,validation)'></ion-icon>
+      <ion-icon name='heart' [hidden]='!alreadyLikedCreator(shop,validation)' style="color:pink" ></ion-icon>
+
+    </a>
+
+    <ion-card-content>
+      <ion-card-title>{{shop.creatorName}}</ion-card-title>
+      <p>{{shop.creatorIntroduction}}</p>
+    </ion-card-content>
+
+    <ion-row style="padding: 0 0.5em" >
+      <ion-col>
+        <button ion-button clear style="padding: 0 0 0 0.3em">
+          <ion-icon name='thumbs-up'></ion-icon>
+          Like
+        </button>
+      </ion-col>
+      <ion-col text-center>
+        <button ion-button clear (tap)="showCommentBox=!showCommentBox">
+          <ion-icon name='text'></ion-icon>
+          Comment
+        </button>
+      </ion-col>
+      <ion-col text-right>
+        <button ion-button clear style="padding: 0 0.3em 0 0">
+          <ion-icon name='share-alt'></ion-icon>
+          Check blog
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+
+  <div [hidden]="!showCommentBox" style="padding: 0.5em">
+    <div no-padding><rating [(ngModel)]="rate"></rating></div>
+    <div><ion-textarea placeholder="Input comment here" [(ngModel)]="comment" style="border-bottom-width: 1px"></ion-textarea></div>
+
+    <button ion-button style="float: right" (tap)="sendComment()" >Comment</button>
+
+  </div>
+
+  <ion-card class="highLightsCard">
+    <div class="spaceLine"></div>
+    <ion-card-header>
+      Comments
+    </ion-card-header>
+    <ion-list  *ngFor="let commentContent of shop.comment" >
+      <ion-item>
+        <ion-avatar item-left>
+          <img src="{{'images/' + commentContent.username + '.userImage.jpg'}}">
+        </ion-avatar>
+        <p style="float:right">{{commentContent.posted | date:'yyyy/MM/dd hh:mm:ss'}}</p>
+        <p>{{commentContent.username}}</p>
+        <h3>{{commentContent.text}}</h3>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-toolbar class="listsToolbar">
+    <div  class="buttonInMenu">
+      <button ion-button  clear (tap)="presentShopDetailsPop1Popover($event)">
+        shoPop1
+        <ion-icon name="arrow-down-outline"></ion-icon>
+      </button>
+    </div>
+    <div class="buttonInMenu">
+      <button ion-button  clear (tap)="presentShopDetailsPop2Popover($event)">
+        shoPop2
+        <ion-icon name="arrow-down-outline"></ion-icon>
+      </button>
+    </div>
+
+    <div class="buttonInMenu">
+      <button ion-button  clear (tap)="presentShopDetailsPop3Popover($event)">
+        shoPop3
+        <ion-icon name="arrow-down-outline"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+
+    <ion-list *ngFor="let product of shopDetails" approxItemHeight="50px">
+      <ion-card class="adv-map" >
+        <div style="position: relative">
+          <ion-slides>
+            <ion-slide>
+              <a (tap)="openProductDetailsPage(product)">
+                <img class="bigImage" [src]="product.imageURL" >
+              </a>
+              <a class="fab-favorite" (tap)="likeProduct(product)">
+                <ion-icon name='heart-outline' [hidden]='alreadyLiked(product,validation)'></ion-icon>
+                <ion-icon name='heart' [hidden]='!alreadyLiked(product,validation)' style="color:pink" ></ion-icon>
+              </a>
+              <div class="fab-time">
+                <ion-icon name='time-outline'></ion-icon>
+                <span>{{product.time}}分</span>
+              </div>
+            </ion-slide>
+
+            <ion-slide>
+              <a (tap)="openProductDetailsPage(product)">
+                <img [src]="product.imageURL"  >
+              </a>
+            </ion-slide>
+          </ion-slides>
+
+        </div>
+
+        <ion-item class="cardIntroduction">
+          <span item-left >{{product.productName}}</span>
+          <span >{{product.creatorName}}</span>
+        </ion-item>
+      </ion-card>
+
+    </ion-list>
+
+  <div #popoverText class="text-to-change">
+    <div> testData</div>
+  </div>
+</ion-content>

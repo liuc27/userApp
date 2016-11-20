@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-buttons left>
+      <button ion-button (tap)="openMenu()">
+        tokyo<ion-icon name="arrow-down"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-searchbar ></ion-searchbar>
+    <ion-buttons end>
+      <button ion-button>
+        <ion-icon name="alert"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="product">
+
+  <ion-slides pager class="ion-slides-class">
+    <ion-slide>
+      <ion-grid>
+            <ion-row class="menuClass1"  *ngFor="let row of grid">
+              <ion-col width-20  class="ion-col-class" *ngFor="let menuItem of row" >
+                <button class="roundButton"  primary (tap)="openProductListsPage(menuItem)" [ngStyle]="{'backgroundColor': menuItem.color}">
+                  <!--[ngStyle]="{'backgroundColor': item.color}" -->
+                  <ion-icon class="ion-icon-class" [name]="menuItem.icon"></ion-icon>
+                </button>
+                <div style="font-size:4vw;">
+                  {{menuItem.name}}
+                </div>
+              </ion-col>
+            </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+  <div class="product">
+
+
+    <ion-list  *ngFor="let product of products"  approxItemHeight="50px">
+
+        <ion-card class="adv-map" >
+          <div >
+            <!-- <ion-slides [options]="mySlideOptions"> -->
+              <div style="position: relative">
+                <a (tap)="openProductDetailsPage(product)">
+                  <img class="bigImage" [src]="product.imageURL">
+                </a>
+                <a class="fab-favorite" (tap)="likeProduct(product)">
+                  <ion-icon name='heart-outline' [hidden]='alreadyLiked(product,validation)'></ion-icon>
+                  <ion-icon name='heart' [hidden]='!alreadyLiked(product,validation)' style="color:pink" ></ion-icon>
+                </a>
+
+                <div class="fab-time">
+                  <ion-icon name='time-outline'></ion-icon>
+                  <span>{{product.time}}分</span>
+                </div>
+
+                <a class="fab-shop" (tap)="openShopDetailsPage(product)">
+                  <ion-avatar >
+                    <img [src]="product.creatorImageURL">
+                  </ion-avatar>
+                </a>
+              </div>
+
+            <ion-item class="cardIntroduction">
+              <span item-left >{{product.productName}}</span>
+              <span >{{product.creatorName}}</span>
+            </ion-item>
+          </div>
+        </ion-card>
+
+    </ion-list>
+  </div>
+</ion-content>

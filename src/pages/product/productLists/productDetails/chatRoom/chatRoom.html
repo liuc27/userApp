@@ -1,0 +1,114 @@
+<ion-header>
+<ion-navbar hideBackButton>
+  <ion-buttons left navPop class="leftNavButton">
+    <div block button >
+      <ion-icon name="arrow-back"></ion-icon>
+    </div>
+  </ion-buttons>
+  <ion-title>productDetails Page</ion-title>
+
+  <ion-buttons end class="rightNavButton">
+    <button  (tap)="shareActionSheet()">
+      <ion-icon name="share-alt"></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-navbar>
+</ion-header>
+<ion-content  #popoverContent class="chatRoomDetails">
+
+  <div>
+    <ion-card class="adv-map">
+      <div style="position: relative">
+        <ion-slides>
+          <ion-slide>
+            <div class="videoWrapper">
+              <iframe class="youtubeVideo"
+               [src]="url" frameborder="0" allowfullscreen>
+              </iframe>
+            </div>
+          </ion-slide>
+        </ion-slides>
+        <a class="fab-shop" (tap)="openShopDetailsPage(product.email)">
+          <ion-avatar >
+            <img src="img/card-saopaoloo.png">
+          </ion-avatar>
+        </a>
+      </div>
+
+      <ion-item>
+        <h2> productName</h2>
+        <p>productDetailsPop2</p>
+
+      </ion-item>
+      <ion-item actions>
+        <span item-left> 50% off</span>
+        <span item-left>2000yen</span>
+        <span item-right>
+            100already purchased
+        </span>
+      </ion-item>
+
+      <div padding>
+        <button primary block>Buy!</button>
+      </div>
+
+    </ion-card>
+
+    <ion-card class="highLightsCard">
+      <div class="spaceLine"></div>
+      <ion-card-header>
+        highLights
+      </ion-card-header>
+      <ion-list >
+        <div ion-item>
+          highLightsDetails
+        </div>
+      </ion-list>
+      <div padding>
+        <button primary block  (tap)="enterChatroom()">Enter chatroom!</button>
+      </div>
+    </ion-card>
+
+    <ion-card class="highLightsCard">
+      <div class="spaceLine"></div>
+      <ion-card-header>
+        About This Deal
+      </ion-card-header>
+      <ion-list >
+        <div ion-item>
+          detail
+        </div>
+      </ion-list>
+    </ion-card>
+
+    <ion-card class="highLightsCard">
+      <div class="spaceLine"></div>
+      <ion-card-header>
+        productDetailsPop2
+      </ion-card-header>
+      <ion-list >
+        <div ion-item>
+          phoneNumber
+        </div>
+      </ion-list>
+    </ion-card>
+
+
+    <ion-card class="highLightsCard">
+      <div class="spaceLine"></div>
+      <ion-card-header>
+        Fine Print
+      </ion-card-header>
+      <ion-list >
+        <div ion-item>
+          restriction detail
+        </div>
+      </ion-list>
+    </ion-card>
+
+  </div>
+
+  <div #popoverText class="text-to-change">
+    <div> testData</div>
+  </div>
+</ion-content>
