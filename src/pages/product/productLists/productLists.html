@@ -28,34 +28,8 @@
         <ion-icon name="arrow-down-outline"></ion-icon>
   </ion-toolbar>
 
-  <!--<ion-toolbar class="listsToolbar">
-    <span  class="buttonInMenu">
-      <a  (tap)="presentProductListsPop1Popover($event)">
-        Pop1
-        <ion-icon name="arrow-down-outline"></ion-icon>
-      </a>
-    </span>
-    <span  class="buttonInMenu">
-      <a (tap)="presentProductListsPop2Popover($event)">
-        Pop2
-        <ion-icon name="arrow-down-outline"></ion-icon>
-      </a>
-    </span>
-
-    <span class="buttonInMenu">
-      <a (tap)="presentProductListsPop3Popover($event)">
-        Pop3
-        <ion-icon name="arrow-down-outline"></ion-icon>
-      </a>
-    </span>
-  </ion-toolbar>-->
-
-
-
-
 
    <div class="product">
-
 
     <ion-list  *ngFor="let product of productLists"  approxItemHeight="50px">
 
@@ -67,14 +41,26 @@
                   <img class="bigImage" [src]="product.imageURL">
                 </a>
                 <a class="fab-favorite" (tap)="likeProduct(product)">
-                  <ion-icon name='heart-outline' [hidden]='alreadyLiked(product,validation)'></ion-icon>
-                  <ion-icon name='heart' [hidden]='!alreadyLiked(product,validation)' style="color:pink" ></ion-icon>
+                  <ion-icon name='heart-outline' [hidden]='alreadyLiked(product)'></ion-icon>
+                  <ion-icon name='heart' [hidden]='!alreadyLiked(product)' style="color:pink" ></ion-icon>
                 </a>
 
+
+            <!--<div class="feature"></div>-->
+            <!--<ion-row>
+              <ion-col width-33 *ngFor="let menuItem of grid" >
                 <div class="fab-time">
                   <ion-icon name='time-outline'></ion-icon>
-                  <span>{{product.time}}分</span>
+                  <span class = "fab-time-text">student</span>
                 </div>
+              </ion-col>
+            </ion-row>-->
+            <ion-row *ngFor="let menuItem of grid">
+                <div class="fab-time">
+                  <div class = "fab-time-text">student</div>
+                </div>
+            </ion-row>
+
 
                 <a class="fab-shop" (tap)="openShopDetailsPage(product)">
                   <ion-avatar >

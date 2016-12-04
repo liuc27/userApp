@@ -1,0 +1,47 @@
+import { Slides } from 'ionic-angular';
+import { OnInit, OnChanges, EventEmitter, SimpleChanges } from '@angular/core';
+import { ICalendarComponent, IDayView, IDayViewRow, IDisplayEvent, IEvent, ITimeSelected, IRange, CalendarMode } from './calendar';
+import { CalendarService } from './calendar.service';
+export declare class DayViewComponent implements ICalendarComponent, OnInit, OnChanges {
+    private calendarService;
+    slider: Slides;
+    class: boolean;
+    formatHourColumn: string;
+    formatDayTitle: string;
+    allDayLabel: string;
+    hourParts: number;
+    eventSource: IEvent[];
+    onRangeChanged: EventEmitter<IRange>;
+    onEventSelected: EventEmitter<IEvent>;
+    onTimeSelected: EventEmitter<ITimeSelected>;
+    onTitleChanged: EventEmitter<string>;
+    slideOption: {
+        runCallbacksOnInit: boolean;
+        loop: boolean;
+    };
+    views: IDayView[];
+    currentViewIndex: number;
+    direction: number;
+    mode: CalendarMode;
+    range: IRange;
+    private inited;
+    constructor(calendarService: CalendarService);
+    ngOnInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    onSlideChanged(): void;
+    move(direction: number): void;
+    static createDateObjects(startTime: Date): IDayViewRow[];
+    getViewData(startTime: Date): IDayView;
+    getRange(currentDate: Date): IRange;
+    onDataLoaded(): void;
+    refreshView(): void;
+    getTitle(): string;
+    private static compareEventByStartOffset(eventA, eventB);
+    select(selectedTime: Date, events: IDisplayEvent[]): void;
+    placeEvents(orderedEvents: IDisplayEvent[]): void;
+    placeAllDayEvents(orderedEvents: IDisplayEvent[]): void;
+    overlap(event1: IDisplayEvent, event2: IDisplayEvent): boolean;
+    calculatePosition(events: IDisplayEvent[]): void;
+    private static calculateWidth(orderedEvents);
+    eventSelected(event: IEvent): void;
+}

@@ -7,8 +7,7 @@ import {getSelectedProductDetails} from '../../../providers/productDetails-GetSe
 import {ShopDetails} from '../../../shop/shopDetails/shopDetails';
 import {SafeResourceUrl, DomSanitizer} from '@angular/platform-browser';
 import {ProductService} from '../../../providers/product-getAllProducts-service/product-getAllProducts-service';
-import {ChatRoom} from './chatRoom/chatRoom';
-import {MorphPage} from './morphPage/morphPage';
+import {Reservation} from './reservation/reservation';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {CheckLogin} from '../../../../providers/check-login'
@@ -24,8 +23,7 @@ export class ProductDetails {
     @ViewChild('popoverContent', {read: ElementRef}) content: ElementRef;
     @ViewChild('popoverText', {read: ElementRef}) text: ElementRef;
     product;
-    chatRoomId;
-    morphPageId;
+    reservationId;
     productOrShop;
     productDetails;
     url: SafeResourceUrl;
@@ -38,7 +36,12 @@ export class ProductDetails {
     password: undefined
   };
 
-    eventSource;
+    eventSource = [];
+    callEventSource = [];
+    guideEventSource = [];
+    eventSourceISO;
+    callEventSourceISO;
+    guideEventSourceISO;
     viewTitle;
 
     isToday: boolean;
@@ -46,7 +49,13 @@ export class ProductDetails {
         mode: 'week',
         currentDate: new Date()
     };
-    creatorEvents = [];
+    guideCreatorEvents = [];
+    guideCreatorEventsISO = []
+    callCreatorEvents = [];
+    callCreatorEventsISO = []
+    serviceType;
+    guideReservationNumber = 1;
+    callReservationNumber = 1;
 
 
     constructor(private params: NavParams,
@@ -55,8 +64,7 @@ export class ProductDetails {
     private actionSheet:ActionSheetController,
     private events: Events,
     public productDetailsService:getSelectedProductDetails,
-    public chatRoomService:ProductService,
-    public morphPageService:ProductService,
+    public reservationService:ProductService,
     public productService:ProductService,
                 public storage:Storage,
                 public checkLogin:CheckLogin,
@@ -67,13 +75,14 @@ export class ProductDetails {
       console.log("params.data got");
         this.loadSelectedproductDetails();
         this.actionSheet = actionSheet;
+        this.serviceType = "guide"
       this.checkLogin.load()
         .then(data => {
           this.validation = data
           this.alreadyLoggedIn = true;
         });
         this.url = sanitizer.bypassSecurityTrustResourceUrl(this.product.videoURL+'?rel=0&modestbranding=1&autohide=1&showinfo=0&');
-    }
+  }
 
     ionViewWillEnter() {
       // console.log("send hideTabs event")
@@ -206,34 +215,6 @@ export class ProductDetails {
         });
     }
 
-    enterChatRoom() {
-        console.log("enterChatRoom");
-        this.chatRoomService.load()
-            .then(data => {
-              this.chatRoomId = data;
-              if(data){
-                console.log("data");
-                console.log("chatRoomServiceConnecting");
-                this.nav.push(ChatRoom,{product:this.product});
-
-              }
-            });
-    }
-
-    enterMorphPage() {
-        console.log("enterMorphPage");
-        this.morphPageService.load()
-            .then(data => {
-              this.morphPageId = data;
-              if(data){
-                console.log("data");
-                console.log("morphPageServiceConnecting");
-                this.nav.push(MorphPage,{product:this.product});
-
-              }
-            });
-    }
-
     purchaseProduct(){
       window.open("http://"+this.product.link, "_system");
     }
@@ -287,7 +268,7 @@ export class ProductDetails {
         console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' + (ev.events !== undefined && ev.events.length !== 0));
         console.log(ev);
 
-        if(this.calendar.mode == "month"){
+        if(this.calendar.mode == "month"&&this.serviceType == "guide"){
             let confirm1 = this.alertCtrl.create({
                         title: 'Make reservation?',
                         message: 'How many hours do you need?',
@@ -308,7 +289,38 @@ export class ProductDetails {
                       });
                       confirm1.present();
 
-          } else {
+          } else if(this.calendar.mode == "month"&&this.serviceType == "call"){
+                        let confirm2 = this.alertCtrl.create({
+                        title: 'Make call reservation?',
+                        message: '1 hour support for any time in a day',
+                        buttons: [
+                          {
+                            text: '8AM~10PM support',
+                            handler: () => {
+                              this.createCallReservation(ev,"dayTime")
+                            }
+                            },{
+                            text: '10PM~8AM support',
+                            handler: () => {
+                              this.createCallReservation(ev,"nightTime")
+                            }
+                          },{
+                            text: '24hour support',
+                            handler: () => {
+                              this.createCallReservation(ev,"fullTime")
+                            }
+                          },
+
+                          {
+                            text: 'cancell',
+                            handler: () => {
+                            
+                            }
+                          }
+                        ]
+                      });
+                      confirm2.present();
+          }else{
                     console.log("already week")
          
                   let confirm = this.alertCtrl.create({
@@ -319,7 +331,6 @@ export class ProductDetails {
                             text: '3 hour',
                             handler: () => {
                               this.createEvents(ev,3)
-
                             }
                           },
                           {
@@ -354,15 +365,75 @@ export class ProductDetails {
                   endTime.setHours(endTime.getHours()+h);
 
                   // endTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + endDay));
-                  this.creatorEvents.push({
-                      title: 'Reservation - ' + 1,
+                  this.guideCreatorEvents.push({
+                      title: 'guideReservation - ' + this.guideReservationNumber,
                       startTime: startTime,
                       endTime: endTime,
                       allDay: false
                   })
-                  this.eventSource = [].concat(this.creatorEvents);
+                  this.eventSource = [].concat(this.guideCreatorEvents);
 
-                  console.log(this.eventSource)
+                  this.guideCreatorEventsISO.push({
+                      title: 'guideReservation - ' + this.guideReservationNumber,
+                      startTime: startTime.toISOString(),
+                      endTime: endTime.toISOString(),
+                      allDay: false
+                  })
+                  this.eventSourceISO = [].concat(this.guideCreatorEventsISO);
+                  
+                  this.guideEventSource = this.eventSource;
+                  this.guideEventSourceISO = this.eventSourceISO
+                  this.guideReservationNumber += 1;
+    }
+
+    createCallReservation(ev,option: String){
+                  var date = ev.selectedTime;
+                  var startTime, endTime;
+                  if(option === "dayTime"){
+                    startTime = new Date(ev.selectedTime.getTime());
+                    startTime.setHours(startTime.getHours()-4);
+                  // startTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + startDay));
+                    endTime = new Date(ev.selectedTime.getTime());
+                    endTime.setHours(endTime.getHours()+10);
+                  }else if(option === "nightTime"){
+                    startTime = new Date(ev.selectedTime.getTime());
+                    startTime.setHours(startTime.getHours()+10);
+                  // startTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + startDay));
+                    endTime = new Date(ev.selectedTime.getTime());
+                    endTime.setHours(endTime.getHours()+20);
+                  }else if(option === "fullTime"){
+                    startTime = new Date(ev.selectedTime.getTime());
+                    startTime.setHours(startTime.getHours()-4);
+                  // startTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + startDay));
+                    endTime = new Date(ev.selectedTime.getTime());
+                    endTime.setHours(endTime.getHours()+20);
+                  }
+
+
+                  // endTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + endDay));
+                  this.callCreatorEvents.push({
+                      title: 'callReservation - ' + this.callReservationNumber,
+                      startTime: startTime,
+                      endTime: endTime,
+                      allDay: false
+                  })
+                  this.eventSource = [].concat(this.callCreatorEvents);
+
+                   this.callCreatorEventsISO.push({
+                      title: 'callReservation - ' + this.callReservationNumber,
+                      startTime: startTime.toISOString(),
+                      endTime: endTime.toISOString(),
+                      allDay: false
+                  })
+
+                 
+
+                  this.eventSourceISO = [].concat(this.callCreatorEventsISO);
+
+                  this.callEventSource = this.eventSource;
+                  this.callEventSourceISO = this.eventSourceISO
+
+                  this.callReservationNumber += 1;
     }
 
     onCurrentDateChanged(event: Date) {
@@ -413,4 +484,31 @@ export class ProductDetails {
     onRangeChanged(ev) {
         console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
     }
+
+    selectedCall(){
+      this.eventSource = this.callEventSource
+      this.eventSourceISO = this.callEventSourceISO
+      this.calendar.mode = "month"
+      this.serviceType = "call"
+    }
+
+    selectedGuide(){
+      this.eventSource = this.guideEventSource
+      this.eventSourceISO = this.guideEventSourceISO
+      this.calendar.mode = "week"
+      this.serviceType = "guide"
+    }
+
+    enterReservation() {
+        console.log("enterReservation");
+        this.reservationService.load()
+            .then(data => {
+              this.reservationId = data;
+              if(data){
+                console.log("data");
+                console.log("reservationServiceConnecting");
+                this.nav.push(Reservation,{eventSource:this.eventSourceISO});
+            }
+          });
+  　}
 }

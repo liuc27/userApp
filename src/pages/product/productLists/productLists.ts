@@ -28,6 +28,10 @@ export class ProductLists {
     product;
     productOrShop;
     productLists;
+    grid = [
+      {},
+      {},
+    ];
     mySlideOptions = {
       autoplay: 3500,
       loop: true,
@@ -81,6 +85,7 @@ export class ProductLists {
         
         modal.onDidDismiss(data => {
           console.log(data);
+          this.searchFilter = data;
         });
         modal.present();
     }
@@ -135,10 +140,10 @@ export class ProductLists {
     }
 
 
-      alreadyLiked(product,validation) {
-    if (validation.username == undefined) {
+ alreadyLiked(product) {
+    if (this.validation.username == undefined) {
       return false
-    } else if (product.likedBy.indexOf(validation.username) >= 0) {
+    } else if (product.likedBy.indexOf(this.validation.username) >= 0) {
      // console.log("posessed")
       // console.log(product.likedBy.indexOf(validation.username))
       return true

@@ -7,7 +7,7 @@ page-productDetails {
 
     .calendarClass{
       
-      height: 75vw
+     // height: 75vw
     }
 
     .button-icon-only ion-icon {
@@ -82,6 +82,8 @@ page-productDetails {
       width: 100vw;
     }
 
+
+
     ul {
 
       &.rating {
@@ -96,5 +98,12 @@ page-productDetails {
         }
       }
     }
+
   }
+
+  .nextStep{
+      color:#387ef5,;
+      font-size: 1.3em;
+    }
 }
+

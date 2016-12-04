@@ -9,18 +9,25 @@ import {SafeResourceUrl, DomSanitizer} from '@angular/platform-browser';
 import {ProductService} from '../../../../providers/product-getAllProducts-service/product-getAllProducts-service';
 
 @Component({
-  selector: 'page-chatRoom',
-  templateUrl: 'chatRoom.html',
+  selector: 'page-reservation',
+  templateUrl: 'reservation.html',
     providers:[getSelectedProductDetails, ProductService]
 })
-export class ChatRoom {
+export class Reservation {
     @ViewChild('popoverContent', {read: ElementRef}) content: ElementRef;
     @ViewChild('popoverText', {read: ElementRef}) text: ElementRef;
     product;
     chatroomId;
     productOrShop;
     productDetails;
+    eventSource;
     url: SafeResourceUrl;
+    eventList = {
+      startTime: new Date().toISOString(),
+      endTime: new Date().toISOString()
+    }
+
+
     constructor(private params: NavParams,
     private nav:NavController,
     private actionSheet:ActionSheetController,
@@ -28,7 +35,7 @@ export class ChatRoom {
                 private sanitizer: DomSanitizer,
     public productDetailsService:getSelectedProductDetails,
     public chatroomService:ProductService) {
-        this.product = params.data.product;
+        this.eventSource = params.data.eventSource;
         this.productOrShop = "product";
         console.log(params.data);
         this.loadSelectedproductDetails();
@@ -39,6 +46,14 @@ export class ChatRoom {
 
     onPageWillEnter() {
         this.events.publish('hideTabs');
+    }
+
+    cancellReservation(x){
+        console.log(x)
+        for(var i=this.eventSource.length-1; i>=0; i--) {
+            if( this.eventSource[i].title == x) this.eventSource.splice(i,1);
+        }
+        console.log(this.eventSource)
     }
 
     shareActionSheet() {

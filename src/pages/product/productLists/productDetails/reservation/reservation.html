@@ -1,24 +1,20 @@
 <ion-header>
-<ion-navbar hideBackButton>
-  <ion-buttons left navPop class="leftNavButton">
-    <div block button >
-      <ion-icon name="arrow-back"></ion-icon>
-    </div>
-  </ion-buttons>
+<ion-navbar>
+
   <ion-title>productDetails Page</ion-title>
 
-  <ion-buttons end class="rightNavButton">
-    <button  (tap)="shareActionSheet()">
+  <ion-buttons end >
+    <button ion-button (tap)="shareActionSheet()">
       <ion-icon name="share-alt"></ion-icon>
     </button>
   </ion-buttons>
 </ion-navbar>
 </ion-header>
-<ion-content  #popoverContent class="chatRoomDetails">
+<ion-content  #popoverContent class="reservationDetails">
 
   <div>
     <ion-card class="adv-map">
-      <div style="position: relative">
+      <!--<div style="position: relative">
         <ion-slides>
           <ion-slide>
             <div class="videoWrapper">
@@ -33,7 +29,29 @@
             <img src="img/card-saopaoloo.png">
           </ion-avatar>
         </a>
-      </div>
+      </div>-->
+<div  *ngFor="let event of eventSource">
+<ion-list>
+  <ion-list-header>
+    {{event.title}}
+    <span clear primary class="reservationCost">
+              1000円
+    </span>
+    <a item-right clear primary (tap)="cancellReservation(event.title)">
+            cancell<ion-icon  name="close"></ion-icon>
+    </a>
+  </ion-list-header>
+    <ion-item>
+      <ion-label>Start Time</ion-label>
+      <ion-datetime   min=2016 max=2020 displayFormat="YYYY/MM/DD HH:mm" pickerFormat="YYYY-MM-DDTHH:mm" [(ngModel)]="event.startTime"></ion-datetime>
+    </ion-item>
+
+        <ion-item>
+      <ion-label>End Time</ion-label>
+      <ion-datetime   min=2016 max=2020 displayFormat="YYYY/MM/DD HH:mm" pickerFormat="YYYY-MM-DDTHH:mm" [(ngModel)]="event.endTime"></ion-datetime>
+    </ion-item>
+</ion-list>
+</div>
 
       <ion-item>
         <h2> productName</h2>

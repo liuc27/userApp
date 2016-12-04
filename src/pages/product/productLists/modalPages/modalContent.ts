@@ -24,6 +24,8 @@ export class ModalContentPage {
       endTime: new Date().toISOString()
     }
 
+    theSavedFilter;
+
     isToday: boolean;
     calendar = {
         mode: 'month',
@@ -46,6 +48,7 @@ export class ModalContentPage {
     
 
     this.searchFilter = params.data;
+    this.theSavedFilter = Object.assign({}, params.data);
     console.log(params)
     var characters = [
       {
@@ -180,6 +183,13 @@ export class ModalContentPage {
       console.log(this.searchFilter)
       this.viewCtrl.dismiss(this.searchFilter);
 
+    }
+
+    dismiss(){
+              console.log(this.theSavedFilter)
+              
+
+              this.viewCtrl.dismiss(this.theSavedFilter);
     }
     onRangeChanged(ev) {
         console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);

@@ -46,14 +46,22 @@
                   <img class="bigImage" [src]="product.imageURL">
                 </a>
                 <a class="fab-favorite" (tap)="likeProduct(product)">
-                  <ion-icon name='heart-outline' [hidden]='alreadyLiked(product,validation)'></ion-icon>
-                  <ion-icon name='heart' [hidden]='!alreadyLiked(product,validation)' style="color:pink" ></ion-icon>
+                  <ion-icon name='heart-outline' [hidden]='alreadyLiked(product)'></ion-icon>
+                  <ion-icon name='heart' [hidden]='!alreadyLiked(product)' style="color:pink" ></ion-icon>
                 </a>
 
+
+            <!--<div class="feature"></div>-->
+            <ion-row>
+              <ion-col width-25 *ngFor="let menuItem of grid" >
                 <div class="fab-time">
                   <ion-icon name='time-outline'></ion-icon>
-                  <span>{{product.time}}分</span>
+                  <span class = "fab-time-text">{{product.time}}分</span>
                 </div>
+              </ion-col>
+            </ion-row>
+
+
 
                 <a class="fab-shop" (tap)="openShopDetailsPage(product)">
                   <ion-avatar >
@@ -68,6 +76,24 @@
             </ion-item>
           </div>
         </ion-card>
+
+                <!--<ion-item>
+
+          <ion-thumbnail item-left (tap)="openProductDetailsPage(product)">
+            <img [src]="product.imageURL">
+          </ion-thumbnail>
+
+          <h2 (tap)="openProductDetailsPage(product)">
+            {{product.productName}} {{product.creatorName}}
+          </h2>
+          <p (tap)="openProductDetailsPage(product)">{{product.introduction}}</p>
+          <button ion-button clear item-right>
+                    <a class="fab-favorite" (tap)="likeProduct(product)">
+                      <ion-icon name='heart-outline' [hidden]='alreadyLiked(product)'></ion-icon>
+                      <ion-icon name='heart' color='positive' [hidden]='!alreadyLiked(product)' style="color:pink" ></ion-icon>
+        </a>
+          </button>
+        </ion-item>-->
 
     </ion-list>
   </div>

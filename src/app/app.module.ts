@@ -13,8 +13,7 @@ import {SettingsPage} from '../pages/settings/settings';
 import {ProductLists} from '../pages/product/productLists/productLists';
 import {ProductDetails} from '../pages/product/productLists/productDetails/productDetails';
 import {ShopDetails} from '../pages/shop/shopDetails/shopDetails';
-import {ChatRoom} from '../pages/product/productLists/productDetails/chatRoom/chatRoom';
-import {MorphPage} from '../pages/product/productLists/productDetails/morphPage/morphPage';
+import {Reservation} from '../pages/product/productLists/productDetails/reservation/reservation';
 
 
 import {shopPop1} from "../pages/shop/popoverPages/shopPop1";
@@ -50,8 +49,7 @@ import { NgCalendarModule  } from 'ionic2-calendar';
     ProductLists,
     ProductDetails,
     ShopDetails,
-    ChatRoom,
-    MorphPage,
+    Reservation,
     shopPop1,
     shopPop2,
     shopPop3,
@@ -84,8 +82,7 @@ import { NgCalendarModule  } from 'ionic2-calendar';
     ProductLists,
     ProductDetails,
     ShopDetails,
-    ChatRoom,
-    MorphPage,
+    Reservation,
     shopPop1,
     shopPop2,
     shopPop3,

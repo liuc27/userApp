@@ -1,27 +1,36 @@
 <ion-header>
 <ion-navbar >
-
-  <ion-title>{{product.productName}}</ion-title>
-
-  <ion-buttons end class="rightNavButton">
+ <ion-toolbar>
+      <ion-segment [(ngModel)]="serviceType">
+        
+      <ion-segment-button value="guide" (ionSelect)="selectedGuide()">
+        Guide
+      </ion-segment-button>
+      <ion-segment-button value="call" (ionSelect)="selectedCall()">
+        Call
+      </ion-segment-button>
+    </ion-segment>
+ </ion-toolbar>
+  <ion-buttons end >
     <button ion-button (tap)="shareActionSheet()">
       <ion-icon name="share-alt"></ion-icon>
     </button>
   </ion-buttons>
 </ion-navbar>
+
 </ion-header>
 <ion-content  #popoverContent class="productDetails">
 
-  <div >
     <ion-card class="adv-map">
       <div style="position: relative">
         <ion-slides>
           <ion-slide>
-            <div class="videoWrapper">
+            <!--<div class="videoWrapper">
               <iframe class="youtubeVideo"
                [src]="url" frameborder="0" allowfullscreen>
               </iframe>
-            </div>
+            </div>-->
+            <img class="bigImage" [src]="product.imageURL">
             <a class="fab-favorite" (tap)="likeProduct(product)">
               <ion-icon name='heart-outline' [hidden]='alreadyLiked(product,validation)'></ion-icon>
               <ion-icon name='heart' [hidden]='!alreadyLiked(product,validation)' style="color:pink" ></ion-icon>
@@ -48,32 +57,34 @@
 
       <ion-row style="padding: 0 0.5em">
         <!--<ion-col>-->
-          <!--<button ion-button clear big primary (tap)="enterChatRoom()">-->
-            <!--chatRoom-->
+          <!--<button ion-button clear big primary (tap)="enterReservation()">-->
+            <!--reservation-->
           <!--</button>-->
         <!--</ion-col>-->
         <ion-col>
-          <button ion-button clear style="padding: 0 0.3em" (tap)="enterMorphPage()">
-            <ion-icon name='photos'></ion-icon>
-            VR Try
-          </button>
+            <ion-icon name='thumbs-up'></ion-icon>
+            ?Likes
         </ion-col>
         <ion-col text-middle>
-          <button ion-button clear style="padding: 0 0.3em" (tap)="showCommentBox=!showCommentBox">
             <ion-icon name='text'></ion-icon>
-            Comment
-          </button>
+            ?Comments
         </ion-col>
         <ion-col text-right>
-          <button  ion-button clear style="padding: 0 0.3em" (tap)="purchaseProduct()">
-            <ion-icon name='link'></ion-icon>
-            Buy on Amazon
-          </button>
+            <ion-icon name='star'></ion-icon>
+            4.8
+          <!--<button ion-button clear style="padding: 0 0.3em" (tap)="showCommentBox=!showCommentBox">
+            <ion-icon name='text'></ion-icon>
+            ?Comments
+          </button>-->
+
         </ion-col>
       </ion-row>
 
 
     </ion-card>
+
+
+
 
     <div [hidden]="!showCommentBox" style="padding: 0.5em">
         <div no-padding><rating [(ngModel)]="rate"></rating></div>
@@ -84,19 +95,21 @@
     </div>
 
 
+  <div [ngSwitch]="serviceType">
 
-
-
-
+  <div  *ngSwitchCase="'guide'">
 <ion-card class="highLightsCard">
-        <ion-card-header>{{viewTitle}}</ion-card-header>
+        <ion-card-header>Please make reservation by taping table cells</ion-card-header>
         <ion-toolbar>
+        <ion-buttons start>
+            {{viewTitle}}
+        </ion-buttons>
         <ion-buttons end>
-            <!--<button ion-button [disabled]="isToday" (click)="today()">Today</button>-->
-            <button ion-button (click)="changeMode('month')">Month</button>
-            <!--<button ion-button (click)="changeMode('week')">W</button>-->
-            <button ion-button (click)="changeMode('week')">Week</button>
-            <!--<button ion-button (click)="loadEvents()">Load Events</button>-->
+            <!--<button ion-button [disabled]="isToday" (tap)="today()">Today</button>-->
+            <button ion-button (tap)="changeMode('month')">Month</button>
+            <!--<button ion-button (tap)="changeMode('week')">W</button>-->
+            <button ion-button (tap)="changeMode('week')">Week</button>
+            <!--<button ion-button (tap)="loadEvents()">Load Events</button>-->
         </ion-buttons>
         </ion-toolbar>
 </ion-card>
@@ -115,31 +128,46 @@
 <div></div>
 
 
-    <ion-card class="highLightsCard">
-      <div class="spaceLine"></div>
-      <ion-list >
-        <div ion-item>
-          {{product.introduction}}
-        </div>
-      </ion-list>
+  </div>
 
-    </ion-card>
 
-    <ion-card class="highLightsCard">
-      <div class="spaceLine"></div>
-      <ion-card-header>
-        About This Makeup
-      </ion-card-header>
-      <ion-list >
-        <div ion-item>
-          makeup detail.
-        </div>
-        <div ion-item>
-          matching clothes.
-        </div>
-        </ion-list>
 
-    </ion-card>
+  <div  *ngSwitchCase="'call'">
+
+
+
+<ion-card class="highLightsCard">
+        <ion-card-header>Please make reservation by taping table cells</ion-card-header>
+        <ion-toolbar>
+        <ion-buttons start>
+            {{viewTitle}}
+        </ion-buttons>
+        <ion-buttons end>
+            <!--<button ion-button [disabled]="isToday" (tap)="today()">Today</button>-->
+            <button ion-button (tap)="changeMode('month')">Month</button>
+            <!--<button ion-button (tap)="changeMode('week')">W</button>-->
+            <!--<button ion-button (tap)="changeMode('week')">Week</button>-->
+            <!--<button ion-button (tap)="loadEvents()">Load Events</button>-->
+        </ion-buttons>
+        </ion-toolbar>
+</ion-card>
+<div></div>
+<div class="calendarClass">
+    <calendar [eventSource]="eventSource"
+              [calendarMode]="calendar.mode"
+              [currentDate]="calendar.currentDate"
+              (onCurrentDateChanged)="onCurrentDateChanged($event)"
+              (onEventSelected)="onEventSelected($event)"
+              (onTitleChanged)="onViewTitleChanged($event)"
+              (onTimeSelected)="onTimeSelected($event)"
+              step="30">
+    </calendar>
+</div>
+
+  </div>
+  </div>
+
+
 
 
     <ion-card class="highLightsCard">
@@ -159,9 +187,18 @@
       </ion-list>
     </ion-card>
 
-  </div>
 
   <div #popoverText class="text-to-change">
     <div> testData</div>
   </div>
+
+
 </ion-content>
+
+
+ <ion-footer class="nextStep">
+       <ion-toolbar (tap)="enterReservation()">
+         <ion-title >Next Step</ion-title>
+       </ion-toolbar>
+</ion-footer>
+
