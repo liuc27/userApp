@@ -39,7 +39,7 @@ export class CheckLogin {
         if (data1 != null && data1 != undefined) {
           if (data1.username != undefined) {
             console.log("signIn")
-            this.http.post('http://localhost:8080/api/login', data1)
+            this.http.post('http://120.24.168.7:8080/api/login', data1)
               .map(res => res.json())
               .subscribe(data2 => {
                 // we've got back the raw data, now generate the core schedule data

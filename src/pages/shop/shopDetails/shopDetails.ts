@@ -94,7 +94,7 @@ export class ShopDetails {
       }
       console.log(product.likedBy);
 
-      this.http.post('http://localhost:8080/api/likeProduct',likedProduct)
+      this.http.post('http://120.24.168.7:8080/api/likeProduct',likedProduct)
         .map(res => res.json())
         .subscribe(data => {
           // we've got back the raw data, now generate the core schedule data
@@ -145,7 +145,7 @@ export class ShopDetails {
       }
       console.log(shop.likedBy);
 
-      this.http.post('http://localhost:8080/api/likeCreator',likedCreator)
+      this.http.post('http://120.24.168.7:8080/api/likeCreator',likedCreator)
         .map(res => res.json())
         .subscribe(data => {
           // we've got back the raw data, now generate the core schedule data
@@ -224,7 +224,7 @@ export class ShopDetails {
     commentData.text = this.comment
     commentData.rate = this.rate
     console.log(commentData)
-    this.http.post('http://localhost:8080/api/addShopComment',commentData)
+    this.http.post('http://120.24.168.7:8080/api/addShopComment',commentData)
     //.map(res => res.json())
       .subscribe(data => {
         // we've got back the raw data, now generate the core schedule data

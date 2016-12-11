@@ -1,20 +1,19 @@
 <ion-header>
-<ion-navbar>
+    <ion-navbar>
 
-  <ion-title>productDetails Page</ion-title>
+        <ion-title>Reservation Page</ion-title>
 
-  <ion-buttons end >
-    <button ion-button (tap)="shareActionSheet()">
+        <ion-buttons end>
+            <button ion-button (tap)="shareActionSheet()">
       <ion-icon name="share-alt"></ion-icon>
     </button>
-  </ion-buttons>
-</ion-navbar>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
-<ion-content  #popoverContent class="reservationDetails">
+<ion-content class="reservationDetails">
 
-  <div>
     <ion-card class="adv-map">
-      <!--<div style="position: relative">
+        <!--<div style="position: relative">
         <ion-slides>
           <ion-slide>
             <div class="videoWrapper">
@@ -30,64 +29,39 @@
           </ion-avatar>
         </a>
       </div>-->
-<div  *ngFor="let event of eventSource">
-<ion-list>
-  <ion-list-header>
-    {{event.title}}
-    <span clear primary class="reservationCost">
-              1000円
+        <div *ngFor="let event of eventSource; let i = index " padding>
+            <ion-list>
+                <ion-list-header>
+                    {{event.title}} - {{i+1}}
+                    <span clear primary class="reservationCost">
+              {{event.price}}
     </span>
-    <a item-right clear primary (tap)="cancellReservation(event.title)">
+                    <a item-right clear primary (tap)="cancellReservation(i)">
             cancell<ion-icon  name="close"></ion-icon>
     </a>
-  </ion-list-header>
-    <ion-item>
-      <ion-label>Start Time</ion-label>
-      <ion-datetime   min=2016 max=2020 displayFormat="YYYY/MM/DD HH:mm" pickerFormat="YYYY-MM-DDTHH:mm" [(ngModel)]="event.startTime"></ion-datetime>
-    </ion-item>
+                </ion-list-header>
+                <ion-item>
+                    <ion-label>Start Time</ion-label>
+                    <ion-datetime style="color:black;" min=2016 max="2020" displayFormat="YYYY/MM/DD HH:mm" pickerFormat="YYYY-MM-DDTHH" [(ngModel)]="event.startTime" (ionChange)="recaculateTotal()"></ion-datetime>
+                </ion-item>
 
-        <ion-item>
-      <ion-label>End Time</ion-label>
-      <ion-datetime   min=2016 max=2020 displayFormat="YYYY/MM/DD HH:mm" pickerFormat="YYYY-MM-DDTHH:mm" [(ngModel)]="event.endTime"></ion-datetime>
-    </ion-item>
-</ion-list>
-</div>
+                <ion-item>
+                    <ion-label>End Time</ion-label>
+                    <ion-datetime min=2016 max=2020 displayFormat="YYYY/MM/DD HH:mm" pickerFormat="YYYY-MM-DDTHH" [(ngModel)]="event.endTime" (ionChange)="recaculateTotal()"></ion-datetime>
+                </ion-item>
+            </ion-list>
 
-      <ion-item>
-        <h2> productName</h2>
-        <p>productDetailsPop2</p>
-
-      </ion-item>
-      <ion-item actions>
-        <span item-left> 50% off</span>
-        <span item-left>2000yen</span>
-        <span item-right>
-            100already purchased
-        </span>
-      </ion-item>
-
-      <div padding>
-        <button primary block>Buy!</button>
-      </div>
-
-    </ion-card>
-
-    <ion-card class="highLightsCard">
-      <div class="spaceLine"></div>
-      <ion-card-header>
-        highLights
-      </ion-card-header>
-      <ion-list >
-        <div ion-item>
-          highLightsDetails
         </div>
-      </ion-list>
-      <div padding>
-        <button primary block  (tap)="enterChatroom()">Enter chatroom!</button>
-      </div>
+        <ion-item>
+            <span item-right class="totalPrice">
+          Total Price : {{totalPrice}}
+        </span>
+        </ion-item>
+
     </ion-card>
 
-    <ion-card class="highLightsCard">
+
+    <!--<ion-card class="highLightsCard">
       <div class="spaceLine"></div>
       <ion-card-header>
         About This Deal
@@ -97,36 +71,39 @@
           detail
         </div>
       </ion-list>
-    </ion-card>
+    </ion-card>-->
 
-    <ion-card class="highLightsCard">
-      <div class="spaceLine"></div>
-      <ion-card-header>
-        productDetailsPop2
-      </ion-card-header>
-      <ion-list >
-        <div ion-item>
-          phoneNumber
-        </div>
-      </ion-list>
-    </ion-card>
+    <ion-list>
+        <a ion-item (tap)="openOauth('facebook')">
+            <ion-avatar item-left>
+                <img src="assets/img/alipay.jpg">
+            </ion-avatar>
+            <ion-icon color="primary">&nbsp;Alipay</ion-icon>
+        </a>
+        <a ion-item (tap)="openOauth('twitter')">
+            <ion-avatar item-left>
+                <img src="assets/img/wechatpay.jpg">
+            </ion-avatar>
+            <ion-icon color="primary">&nbsp;WechatPay</ion-icon>
+        </a>
+        <a ion-item (tap)="openOauth('wechat')">
+            <ion-avatar item-left>
+                <img src="assets/img/applepay.jpg">
+            </ion-avatar>
+            <ion-icon color="primary">&nbsp;ApplePay</ion-icon>
+        </a>
+        <a ion-item (tap)="openOauth('google')">
+            <ion-avatar item-left>
+                <img src="assets/img/unionpay.jpg">
+            </ion-avatar>
+            <ion-icon color="primary">&nbsp;UnionPay</ion-icon>
+        </a>
+    </ion-list>
 
-
-    <ion-card class="highLightsCard">
-      <div class="spaceLine"></div>
-      <ion-card-header>
-        Fine Print
-      </ion-card-header>
-      <ion-list >
-        <div ion-item>
-          restriction detail
-        </div>
-      </ion-list>
-    </ion-card>
-
-  </div>
-
-  <div #popoverText class="text-to-change">
-    <div> testData</div>
-  </div>
 </ion-content>
+
+<!--<ion-footer class="nextStep">
+       <ion-toolbar (tap)="enterPay()">
+         <ion-title >view Payment</ion-title>
+       </ion-toolbar>
+</ion-footer>-->

@@ -1,84 +1,84 @@
 <ion-header>
-<ion-navbar >
- <ion-toolbar>
-      <ion-segment [(ngModel)]="serviceType">
-        
-      <ion-segment-button value="guide" (ionSelect)="selectedGuide()">
-        Guide
-      </ion-segment-button>
-      <ion-segment-button value="call" (ionSelect)="selectedCall()">
-        Call
-      </ion-segment-button>
-    </ion-segment>
- </ion-toolbar>
-  <ion-buttons end >
-    <button ion-button (tap)="shareActionSheet()">
+    <ion-navbar>
+        <ion-toolbar >
+            <ion-segment style="padding:0; margin:0;text-align: center; " [(ngModel)]="serviceType">
+
+                <ion-segment-button value="guide" (ionSelect)="selectedGuide()">
+                    Guide・Call
+                </ion-segment-button>
+                <ion-segment-button value="chat" (ionSelect)="selectedChat()">
+                    TextChat
+                </ion-segment-button>
+            </ion-segment>
+        </ion-toolbar>
+        <ion-buttons end>
+            <button ion-button (tap)="shareActionSheet()">
       <ion-icon name="share-alt"></ion-icon>
     </button>
-  </ion-buttons>
-</ion-navbar>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
-<ion-content  #popoverContent class="productDetails">
+<ion-content #popoverContent class="productDetails">
 
     <ion-card class="adv-map">
-      <div style="position: relative">
-        <ion-slides>
-          <ion-slide>
-            <!--<div class="videoWrapper">
+        <div style="position: relative">
+            <ion-slides>
+                <ion-slide>
+                    <!--<div class="videoWrapper">
               <iframe class="youtubeVideo"
                [src]="url" frameborder="0" allowfullscreen>
               </iframe>
             </div>-->
-            <img class="bigImage" [src]="product.imageURL">
-            <a class="fab-favorite" (tap)="likeProduct(product)">
-              <ion-icon name='heart-outline' [hidden]='alreadyLiked(product,validation)'></ion-icon>
-              <ion-icon name='heart' [hidden]='!alreadyLiked(product,validation)' style="color:pink" ></ion-icon>
+                    <img class="bigImage" [src]="product.imageURL">
+                    <a class="fab-favorite" (tap)="likeProduct(product)">
+                        <ion-icon name='heart-outline' [hidden]='alreadyLiked(product,validation)'></ion-icon>
+                        <ion-icon name='heart' [hidden]='!alreadyLiked(product,validation)' style="color:pink"></ion-icon>
+                    </a>
+                </ion-slide>
+            </ion-slides>
+            <a class="fab-shop" (tap)="openShopDetailsPage(product)">
+                <ion-avatar>
+                    <img [src]="product.creatorImageURL">
+                </ion-avatar>
             </a>
-          </ion-slide>
-        </ion-slides>
-        <a class="fab-shop" (tap)="openShopDetailsPage(product)">
-          <ion-avatar >
-            <img [src]="product.creatorImageURL">
-          </ion-avatar>
-        </a>
-      </div>
-      <ion-item>
-        <h2> {{product.productName}}</h2>
-        <p>{{product.creatorName}}</p>
+        </div>
+        <ion-item>
+            <h2> {{product.productName}}</h2>
+            <p>{{product.creatorName}}</p>
 
-      </ion-item>
-      <ion-item actions>
-        <span item-left>${{product.retail}}</span>
-        <span item-left [hidden]="product.list==undefined"> {{(product.list - product.retail)/product.list | percent:'2.1-1'}} off</span>
-        <span item-right>100already purchased</span>
-      </ion-item>
+        </ion-item>
+        <ion-item actions>
+            <span item-left>${{product.retail}}</span>
+            <span item-left [hidden]="product.list==undefined"> {{(product.list - product.retail)/product.list | percent:'2.1-1'}} off</span>
+            <span item-right>100already purchased</span>
+        </ion-item>
 
 
-      <ion-row style="padding: 0 0.5em">
-        <!--<ion-col>-->
-          <!--<button ion-button clear big primary (tap)="enterReservation()">-->
+        <ion-row style="padding: 0 0.5em">
+            <!--<ion-col>-->
+            <!--<button ion-button clear big primary (tap)="enterReservation()">-->
             <!--reservation-->
-          <!--</button>-->
-        <!--</ion-col>-->
-        <ion-col>
-            <ion-icon name='thumbs-up'></ion-icon>
-            ?Likes
-        </ion-col>
-        <ion-col text-middle>
-            <ion-icon name='text'></ion-icon>
-            ?Comments
-        </ion-col>
-        <ion-col text-right>
-            <ion-icon name='star'></ion-icon>
-            4.8
-          <!--<button ion-button clear style="padding: 0 0.3em" (tap)="showCommentBox=!showCommentBox">
+            <!--</button>-->
+            <!--</ion-col>-->
+            <ion-col>
+                <ion-icon name='thumbs-up'></ion-icon>
+                ?Likes
+            </ion-col>
+            <ion-col text-middle>
+                <ion-icon name='text'></ion-icon>
+                ?Comments
+            </ion-col>
+            <ion-col text-right>
+                <ion-icon name='star'></ion-icon>
+                4.8
+                <!--<button ion-button clear style="padding: 0 0.3em" (tap)="showCommentBox=!showCommentBox">
             <ion-icon name='text'></ion-icon>
             ?Comments
           </button>-->
 
-        </ion-col>
-      </ion-row>
+            </ion-col>
+        </ion-row>
 
 
     </ion-card>
@@ -87,118 +87,111 @@
 
 
     <div [hidden]="!showCommentBox" style="padding: 0.5em">
-        <div no-padding><rating [(ngModel)]="rate"></rating></div>
-        <div><ion-textarea placeholder="Input comment here" [(ngModel)]="comment" style="border-bottom-width: 1px"></ion-textarea></div>
+        <div no-padding>
+            <rating [(ngModel)]="rate"></rating>
+        </div>
+        <div>
+            <ion-textarea placeholder="Input comment here" [(ngModel)]="comment" style="border-bottom-width: 1px"></ion-textarea>
+        </div>
 
-      <button ion-button style="float: right" (tap)="sendComment()" >Comment</button>
+        <button ion-button style="float: right" (tap)="sendComment()">Comment</button>
 
     </div>
 
 
-  <div [ngSwitch]="serviceType">
+    <div [ngSwitch]="serviceType">
 
-  <div  *ngSwitchCase="'guide'">
-<ion-card class="highLightsCard">
-        <ion-card-header>Please make reservation by taping table cells</ion-card-header>
-        <ion-toolbar>
-        <ion-buttons start>
-            {{viewTitle}}
-        </ion-buttons>
-        <ion-buttons end>
-            <!--<button ion-button [disabled]="isToday" (tap)="today()">Today</button>-->
-            <button ion-button (tap)="changeMode('month')">Month</button>
-            <!--<button ion-button (tap)="changeMode('week')">W</button>-->
-            <button ion-button (tap)="changeMode('week')">Week</button>
-            <!--<button ion-button (tap)="loadEvents()">Load Events</button>-->
-        </ion-buttons>
-        </ion-toolbar>
-</ion-card>
-<div></div>
-<div class="calendarClass">
-    <calendar [eventSource]="eventSource"
-              [calendarMode]="calendar.mode"
-              [currentDate]="calendar.currentDate"
-              (onCurrentDateChanged)="onCurrentDateChanged($event)"
-              (onEventSelected)="onEventSelected($event)"
-              (onTitleChanged)="onViewTitleChanged($event)"
-              (onTimeSelected)="onTimeSelected($event)"
-              step="30">
-    </calendar>
-</div>
-<div></div>
+        <div *ngSwitchCase="'guide'">
+            <ion-card class="highLightsCard">
+                <ion-card-header>Please make reservation by taping table cells</ion-card-header>
+                <ion-toolbar>
+                    <ion-buttons start>
+                        {{viewTitle}}
+                    </ion-buttons>
+                    <ion-buttons end>
+                        <!--<button ion-button [disabled]="isToday" (tap)="today()">Today</button>-->
+                        <button ion-button (tap)="changeMode('month')">Month</button>
+                        <!--<button ion-button (tap)="changeMode('week')">W</button>-->
+                        <button ion-button (tap)="changeMode('week')">Week</button>
+                        <!--<button ion-button (tap)="loadEvents()">Load Events</button>-->
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-card>
+            <div></div>
+            <div class="calendarClass">
+                <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" (onCurrentDateChanged)="onCurrentDateChanged($event)"
+                    (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)"
+                    step="30">
+                </calendar>
+            </div>
+            <div></div>
 
 
-  </div>
+        </div>
 
 
 
-  <div  *ngSwitchCase="'call'">
+        <div *ngSwitchCase="'chat'">
 
 
 
-<ion-card class="highLightsCard">
-        <ion-card-header>Please make reservation by taping table cells</ion-card-header>
-        <ion-toolbar>
-        <ion-buttons start>
-            {{viewTitle}}
-        </ion-buttons>
-        <ion-buttons end>
-            <!--<button ion-button [disabled]="isToday" (tap)="today()">Today</button>-->
-            <button ion-button (tap)="changeMode('month')">Month</button>
-            <!--<button ion-button (tap)="changeMode('week')">W</button>-->
-            <!--<button ion-button (tap)="changeMode('week')">Week</button>-->
-            <!--<button ion-button (tap)="loadEvents()">Load Events</button>-->
-        </ion-buttons>
-        </ion-toolbar>
-</ion-card>
-<div></div>
-<div class="calendarClass">
-    <calendar [eventSource]="eventSource"
-              [calendarMode]="calendar.mode"
-              [currentDate]="calendar.currentDate"
-              (onCurrentDateChanged)="onCurrentDateChanged($event)"
-              (onEventSelected)="onEventSelected($event)"
-              (onTitleChanged)="onViewTitleChanged($event)"
-              (onTimeSelected)="onTimeSelected($event)"
-              step="30">
-    </calendar>
-</div>
+            <ion-card class="highLightsCard">
+                <ion-card-header>Please make reservation by taping table cells</ion-card-header>
+                <ion-toolbar>
+                    <ion-buttons start>
+                        {{viewTitle}}
+                    </ion-buttons>
+                    <ion-buttons end>
+                        <!--<button ion-button [disabled]="isToday" (tap)="today()">Today</button>-->
+                        <button ion-button (tap)="changeMode('month')">Month</button>
+                        <!--<button ion-button (tap)="changeMode('week')">W</button>-->
+                        <!--<button ion-button (tap)="changeMode('week')">Week</button>-->
+                        <!--<button ion-button (tap)="loadEvents()">Load Events</button>-->
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-card>
+            <div></div>
+            <div class="calendarClass">
+                <calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" (onCurrentDateChanged)="onCurrentDateChanged($event)"
+                    (onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)" (onTimeSelected)="onTimeSelected($event)"
+                    step="30">
+                </calendar>
+            </div>
 
-  </div>
-  </div>
+        </div>
+    </div>
 
 
 
 
     <ion-card class="highLightsCard">
-      <div class="spaceLine"></div>
-      <ion-card-header>
-        Comments
-      </ion-card-header>
-      <ion-list  *ngFor="let commentContent of product.comment" >
-          <ion-item>
-            <ion-avatar item-left>
-              <img src="{{'images/' + commentContent.username + '.userImage.jpg'}}">
-            </ion-avatar>
-            <p style="float:right">{{commentContent.posted | date:'yyyy/MM/dd hh:mm:ss'}}</p>
-            <p>{{commentContent.username}}</p>
-            <h3>{{commentContent.text}}</h3>
-          </ion-item>
-      </ion-list>
+        <div class="spaceLine"></div>
+        <ion-card-header>
+            Comments
+        </ion-card-header>
+        <ion-list *ngFor="let commentContent of product.comment">
+            <ion-item>
+                <ion-avatar item-left>
+                    <img src="{{'images/' + commentContent.username + '.userImage.jpg'}}">
+                </ion-avatar>
+                <p style="float:right">{{commentContent.posted | date:'yyyy/MM/dd hh:mm:ss'}}</p>
+                <p>{{commentContent.username}}</p>
+                <h3>{{commentContent.text}}</h3>
+            </ion-item>
+        </ion-list>
     </ion-card>
 
 
-  <div #popoverText class="text-to-change">
-    <div> testData</div>
-  </div>
+    <div #popoverText class="text-to-change">
+        <div> testData</div>
+    </div>
 
 
 </ion-content>
 
 
- <ion-footer class="nextStep">
-       <ion-toolbar (tap)="enterReservation()">
-         <ion-title >Next Step</ion-title>
-       </ion-toolbar>
+<ion-footer class="nextStep">
+    <ion-toolbar (tap)="enterReservation()">
+        <ion-title>View Reservation Detail</ion-title>
+    </ion-toolbar>
 </ion-footer>
-

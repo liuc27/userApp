@@ -1,58 +1,58 @@
 <ion-header>
-  <ion-navbar hideBackButton >
-    <ion-buttons start >
-    </ion-buttons>
+    <ion-navbar hideBackButton>
+        <ion-buttons start>
+        </ion-buttons>
 
-    <ion-title>Artist Page</ion-title>
+        <ion-title>Artist Page</ion-title>
 
-    <ion-buttons end class="rightNavButton">
-      <button ion-button>
+        <ion-buttons end class="rightNavButton">
+            <button ion-button>
         <ion-icon name="search"></ion-icon>
       </button>
-    </ion-buttons>
-  </ion-navbar>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
 
 
-<ion-content  #popoverContent class="shop">
+<ion-content #popoverContent class="shop">
 
-  <ion-toolbar class="listsToolbar">
-    <div  class="buttonInMenu">
-      <button ion-button clear (tap)="presentShopPop1Popover($event)">
+    <ion-toolbar class="listsToolbar">
+        <div class="buttonInMenu">
+            <button ion-button clear (tap)="presentShopPop1Popover($event)">
         shopPop1
         <ion-icon name="arrow-down-outline"></ion-icon>
       </button>
-    </div>
-    <div class="buttonInMenu">
-      <button ion-button clear (tap)="presentShopPop2Popover($event)">
+        </div>
+        <div class="buttonInMenu">
+            <button ion-button clear (tap)="presentShopPop2Popover($event)">
         location
         <ion-icon name="arrow-down-outline"></ion-icon>
       </button>
-    </div>
+        </div>
 
-    <div class="buttonInMenu">
-      <button ion-button clear (tap)="presentShopPop3Popover($event)">
+        <div class="buttonInMenu">
+            <button ion-button clear (tap)="presentShopPop3Popover($event)">
         order
         <ion-icon name="arrow-down-outline"></ion-icon>
       </button>
+        </div>
+    </ion-toolbar>
+
+    <div [ngSwitch]="productOrShop">
+        <ion-list>
+            <ion-item *ngFor="let shop of shops" (tap)="openShopDetailsPage(shop)">
+                <ion-thumbnail item-left>
+                    <img src="{{shop.creatorImageURL}}">
+                </ion-thumbnail>
+                <h2>{{shop.creatorName}} </h2>
+                <p>{{shop.creatorIntroduction}}</p>
+            </ion-item>
+        </ion-list>
     </div>
-  </ion-toolbar>
 
-  <div [ngSwitch]="productOrShop">
-    <ion-list>
-      <ion-item *ngFor="let shop of shops" (tap)="openShopDetailsPage(shop)">
-        <ion-thumbnail item-left>
-          <img src="{{shop.creatorImageURL}}">
-        </ion-thumbnail>
-        <h2>{{shop.creatorName}} </h2>
-        <p>{{shop.creatorIntroduction}}</p>
-      </ion-item>
-    </ion-list>
-  </div>
-
-  <div #popoverText class="text-to-change">
-    <div> testData</div>
-  </div>
+    <div #popoverText class="text-to-change">
+        <div> testData</div>
+    </div>
 </ion-content>

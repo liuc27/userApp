@@ -13,6 +13,7 @@ export class ModalContentPage {
    character;
     eventSource;
     viewTitle;
+    pickUp;
 
     searchFilter = {
       pickUp: false,

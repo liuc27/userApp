@@ -1,27 +1,27 @@
 /**
  * Created by liuchao on 6/25/16.
  */
-import {Component, ViewChild, ElementRef} from '@angular/core';
-import {Events, NavController, NavParams, PopoverController,} from 'ionic-angular';
-import {shopPop1} from "./popoverPages/shopPop1";
-import {shopPop2} from "./popoverPages/shopPop2";
-import {shopPop3} from "./popoverPages/shopPop3";
-import {ShopGetAllShopsService} from '../providers/shop-get-all-shops-service/shop-get-all-shops-service';
-import {ShopDetails} from './shopDetails/shopDetails';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Events, NavController, NavParams, PopoverController, } from 'ionic-angular';
+import { shopPop1 } from "./popoverPages/shopPop1";
+import { shopPop2 } from "./popoverPages/shopPop2";
+import { shopPop3 } from "./popoverPages/shopPop3";
+import { ShopGetAllShopsService } from '../providers/shop-get-all-shops-service/shop-get-all-shops-service';
+import { ShopDetails } from './shopDetails/shopDetails';
 
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {CheckLogin} from '../../providers/check-login'
-import {Storage} from '@ionic/storage'
+import { CheckLogin } from '../../providers/check-login'
+import { Storage } from '@ionic/storage'
 
 @Component({
-  selector:"page-Shop",
+  selector: "page-Shop",
   templateUrl: 'shop.html',
-  providers: [ShopGetAllShopsService,CheckLogin]
+  providers: [ShopGetAllShopsService, CheckLogin]
 })
 export class ShopPage {
-  @ViewChild('popoverContent', {read: ElementRef}) content: ElementRef;
-  @ViewChild('popoverText', {read: ElementRef}) text: ElementRef;
+  @ViewChild('popoverContent', { read: ElementRef }) content: ElementRef;
+  @ViewChild('popoverText', { read: ElementRef }) text: ElementRef;
   product;
   productOrShop;
   shop;
@@ -33,18 +33,18 @@ export class ShopPage {
   };
 
   constructor(private params: NavParams,
-              private nav:NavController,
-              private events: Events,
-              private shopGetAllShopsService:ShopGetAllShopsService,
-              public storage:Storage,
-              public checkLogin:CheckLogin,
-              public popoverCtrl:PopoverController,
-              private http: Http) {
+    private nav: NavController,
+    private events: Events,
+    private shopGetAllShopsService: ShopGetAllShopsService,
+    public storage: Storage,
+    public checkLogin: CheckLogin,
+    public popoverCtrl: PopoverController,
+    private http: Http) {
     this.events = events;
     this.product = params.data.product;
     this.productOrShop = "product";
     console.log(params.data);
-    this.shop=params.data.shop;
+    this.shop = params.data.shop;
     this.loadShops();
     this.checkLogin.load()
       .then(data => {
@@ -58,17 +58,17 @@ export class ShopPage {
     this.events.publish('showTabs');
   }
 
-  loadShops(){
+  loadShops() {
     this.shopGetAllShopsService.load()
       .then(data => {
         this.shops = data;
       })
   }
 
-  openShopDetailsPage(shop){
+  openShopDetailsPage(shop) {
     console.log("shop");
     console.log(shop);
-    this.nav.push(ShopDetails,shop);
+    this.nav.push(ShopDetails, shop);
   }
   presentShopPop1Popover(ev) {
     let shopPop1Page = this.popoverCtrl.create(shopPop1, {

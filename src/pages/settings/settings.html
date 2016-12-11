@@ -1,56 +1,56 @@
 <ion-header>
-  <ion-navbar >
-    <ion-title>
-      {{ 'Settings' | translate }}
-    </ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>
+            {{ 'Settings' | translate }}
+        </ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content class="settings">
 
-  <ion-list [hidden]="alreadyLoggedIn.data">
+    <ion-list [hidden]="alreadyLoggedIn.data">
 
-    <ion-item>
-      <ion-label floating>Username</ion-label>
-      <ion-input type="text" [(ngModel)]="validation.username"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label floating>Username</ion-label>
+            <ion-input type="text" [(ngModel)]="validation.username"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label floating>Password</ion-label>
-      <ion-input type="password" [(ngModel)]="validation.password"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label floating>Password</ion-label>
+            <ion-input type="password" [(ngModel)]="validation.password"></ion-input>
+        </ion-item>
 
-  </ion-list>
+    </ion-list>
 
-  <div padding [hidden]="alreadyLoggedIn.data">
-    <button ion-button primary block (tap)="login()">Login</button>
-  </div>
+    <div padding [hidden]="alreadyLoggedIn.data">
+        <button ion-button primary block (tap)="login()">Login</button>
+    </div>
 
-  <div [hidden]="!alreadyLoggedIn.data" class="welcomeMessage">
-      Welcome, {{validation.username}}!
-       <button ion-button full (tap)="logout()">Logout</button>
-  </div>
+    <div [hidden]="!alreadyLoggedIn.data" class="welcomeMessage">
+        Welcome, {{validation.username}}!
+        <button ion-button full (tap)="logout()">Logout</button>
+    </div>
 
 
-  <ion-list>
-    <ion-list-header>
-    </ion-list-header>
+    <ion-list>
+        <ion-list-header>
+        </ion-list-header>
 
-    <a ion-item (tap)="openOauth('facebook')">
-      <ion-icon  color="primary" name="logo-facebook">&nbsp;Facebook</ion-icon>
-    </a>
-    <a  ion-item (tap)="openOauth('twitter')">
-      <ion-icon color="primary" name="logo-twitter">&nbsp;Twitter</ion-icon>
-    </a>
-    <a  ion-item (tap)="openOauth('wechat')">
-      <ion-icon color="primary" name="logo-facebook">&nbsp;Wechat</ion-icon>
-    </a>
-    <a  ion-item (tap)="openOauth('google')">
-      <ion-icon color="primary" name="logo-google">&nbsp;Google</ion-icon>
-    </a>
+        <a ion-item (tap)="openOauth('facebook')">
+            <ion-icon color="primary" name="logo-facebook">&nbsp;Facebook</ion-icon>
+        </a>
+        <a ion-item (tap)="openOauth('twitter')">
+            <ion-icon color="primary" name="logo-twitter">&nbsp;Twitter</ion-icon>
+        </a>
+        <a ion-item (tap)="openOauth('wechat')">
+            <ion-icon color="primary" name="logo-facebook">&nbsp;Wechat</ion-icon>
+        </a>
+        <a ion-item (tap)="openOauth('google')">
+            <ion-icon color="primary" name="logo-google">&nbsp;Google</ion-icon>
+        </a>
 
-    <a ion-item>
-      <div>{{ 'HELLO' | translate }}</div>
-    </a>
-  </ion-list>
+        <a ion-item>
+            <div>{{ 'HELLO' | translate }}</div>
+        </a>
+    </ion-list>
 </ion-content>
