@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <!--<ion-buttons start>
+        </ion-buttons>-->
+
+    <ion-title>讲师介绍</ion-title>
+    <!--
+        <ion-buttons end class="rightNavButton">
+            <button ion-button>
+        <ion-icon name="search"></ion-icon>
+      </button>
+        </ion-buttons>-->
+  </ion-navbar>
+
+</ion-header>
+
+
+
+<ion-content #popoverContent class="guider">
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!--<ion-toolbar class="listsToolbar">
+        <div class="buttonInMenu">
+            <button ion-button clear (tap)="presentGuiderPop1Popover($event)">
+        guiderPop1
+        <ion-icon name="arrow-down-outline"></ion-icon>
+      </button>
+        </div>
+        <div class="buttonInMenu">
+            <button ion-button clear (tap)="presentGuiderPop2Popover($event)">
+        location
+        <ion-icon name="arrow-down-outline"></ion-icon>
+      </button>
+        </div>
+
+        <div class="buttonInMenu">
+            <button ion-button clear (tap)="presentGuiderPop3Popover($event)">
+        order
+        <ion-icon name="arrow-down-outline"></ion-icon>
+      </button>
+        </div>
+    </ion-toolbar>-->
+  <ion-list [virtualScroll]="guiders" approxItemHeight="60px">
+    <ion-item *virtualItem="let guider" (tap)="openGuiderDetailsPage(guider)">
+      <ion-thumbnail item-left>
+        <img style="object-fit:cover; border-radius:5%;" src="{{guider.guiderImageURL}}">
+      </ion-thumbnail>
+      <h2>{{guider.guiderName}} </h2>
+      <p>{{guider.guiderIntroduction}}</p>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

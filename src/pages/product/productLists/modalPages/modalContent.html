@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-toolbar>
     <ion-title>
@@ -15,17 +14,17 @@
 
 <ion-content padding>
 
-    <ion-item>
-      <ion-label>Start Time</ion-label>
-      <ion-datetime   min=2016 max=2020 displayFormat="YYYY/MM/DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="searchFilter.startTime"></ion-datetime>
-    </ion-item>
+  <ion-item>
+    <ion-label>Start Time</ion-label>
+    <ion-datetime min=2016 max=2020 displayFormat="YYYY/MM/DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="searchFilter.startTime"></ion-datetime>
+  </ion-item>
 
-        <ion-item>
-      <ion-label>End Time</ion-label>
-      <ion-datetime   min=2016 max=2020 displayFormat="YYYY/MM/DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="searchFilter.endTime"></ion-datetime>
-    </ion-item>
+  <ion-item>
+    <ion-label>End Time</ion-label>
+    <ion-datetime min=2016 max=2020 displayFormat="YYYY/MM/DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="searchFilter.endTime"></ion-datetime>
+  </ion-item>
 
-<!--<div class="calendarClass">
+  <!--<div class="calendarClass">
 
     <calendar [eventSource]="eventSource"
               [calendarMode]="calendar.mode"
@@ -37,7 +36,7 @@
               step="30">
     </calendar>
 </div>-->
-          <!--<ion-item>
+  <!--<ion-item>
         <ion-label>
           Pick up<span style="padding-left:1em" [hidden]='!tstatus'>　+ 5000 ~ 1000 yen</span>
           </ion-label>
@@ -48,10 +47,10 @@
         <ion-label>Arya Stark</ion-label>
         <ion-checkbox checked="true"></ion-checkbox>
       </ion-item>-->
- <ion-list>
-     <ion-list-header>
-    Optional filters
-  </ion-list-header>
+  <ion-list>
+    <ion-list-header>
+      Optional filters
+    </ion-list-header>
     <ion-item>
       <ion-toggle checked="false" [(ngModel)]="searchFilter.pickUp"></ion-toggle>
       <ion-label>
@@ -64,7 +63,7 @@
       <ion-toggle checked="false" [(ngModel)]="searchFilter.callSupport"></ion-toggle>
       <ion-label>
         Call support
-       </ion-label>
+      </ion-label>
       <ion-icon name='call' item-left></ion-icon>
     </ion-item>
 
@@ -84,7 +83,7 @@
       <ion-icon name='body' item-left></ion-icon>
     </ion-item>
 
-      <ion-item>
+    <ion-item>
       <ion-toggle checked="false" [(ngModel)]="searchFilter.female"></ion-toggle>
       <ion-label>
         Female only
@@ -93,6 +92,6 @@
     </ion-item>
 
   </ion-list>
-<button ion-button block (tap)="saveFilter()">Save</button>
+  <button ion-button block (tap)="saveFilter()">Save</button>
 
 </ion-content>

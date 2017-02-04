@@ -32,7 +32,7 @@ export class ModalContentPage {
         mode: 'month',
         currentDate: new Date()
     };
-    creatorEvents = [];
+    guiderEvents = [];
 
     public event = {
     month: '1990-02-19',
@@ -46,7 +46,7 @@ export class ModalContentPage {
     public viewCtrl: ViewController,
     public alertCtrl: AlertController
   ) {
-    
+
 
     this.searchFilter = params.data;
     this.theSavedFilter = Object.assign({}, params.data);
@@ -125,13 +125,13 @@ export class ModalContentPage {
                   endTime.setHours(endTime.getHours()+h);
 
                   // endTime = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + endDay));
-                  this.creatorEvents.push({
+                  this.guiderEvents.push({
                       title: 'Reservation - ' + 1,
                       startTime: startTime,
                       endTime: endTime,
                       allDay: false
                   })
-                  this.eventSource = [].concat(this.creatorEvents);
+                  this.eventSource = [].concat(this.guiderEvents);
                   console.log(this.eventSource)
     }
 
@@ -188,7 +188,7 @@ export class ModalContentPage {
 
     dismiss(){
               console.log(this.theSavedFilter)
-              
+
 
               this.viewCtrl.dismiss(this.theSavedFilter);
     }

@@ -12,15 +12,20 @@ import {Storage} from '@ionic/storage'
 @Injectable()
 export class CheckLogin {
 
-  validation = {
-    username: undefined,
-    password: undefined
-  };
+  validation : any = {};
   data: any;
 
   constructor(public http: Http, public storage:Storage,) {
     this.data = null;
 
+  }
+
+  updateLikedProduct(newLikedProduct){
+    if(this.data){
+      this.data.likedProduct = newLikedProduct
+      this.storage.set('validation', this.data)
+      console.log(this.data)
+    }
   }
 
   load() {
@@ -36,30 +41,32 @@ export class CheckLogin {
       // Next we process the data and resolve the promise with the new data.
 
       this.storage.get('validation').then(data1 => {
-        if (data1 != null && data1 != undefined) {
-          if (data1.username != undefined) {
-            console.log("signIn")
-            this.http.post('http://120.24.168.7:8080/api/login', data1)
+        if (data1) {
+          console.log("data1 exists")
+          console.log(data1)
+          if (data1.username) {
+            // console.log("signIn")
+            this.http.post('http://localhost:8080/api/login', data1)
               .map(res => res.json())
               .subscribe(data2 => {
                 // we've got back the raw data, now generate the core schedule data
                 // and save the data for later reference
-                if (data2 != null) {
+                if (data2) {
                   if (data2.data == "OK") {
-                    console.log(data2)
-                    this.storage.set('validation', data1);
+                    // console.log(data2)
+                    this.storage.set('validation', data2);
 
-                    this.data = data1;
-                    console.log(this.data)
-                resolve(this.data);
+                    this.data = data2;
+                    // console.log(this.data)
+                    resolve(this.data);
 
                   } else if (data2.data == "NO") {
-                    console.log("account already exists and the password was wrong")
+                    this.storage.remove('validation')
+                    // console.log("account already exists and the password was wrong")
                                     resolve(this.data);
 
                   } else {
-                    console.log(this.data)
-                    console.log("registered")
+                    // console.log(this.data)
                   }
                 }
 

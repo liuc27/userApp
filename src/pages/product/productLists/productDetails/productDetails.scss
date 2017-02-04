@@ -5,28 +5,14 @@ page-productDetails {
         /*.calendarClass {
              height: 75vw
         }*/
-
-
-         .calendarClass{
-             height:85vw;
-         }
-
-        ion-avatar img {
-            max-width: 3.2em;
-            max-height: 3.2em;
-            border-radius: 1.6em;
-        }
-
         ion-card.adv-map {
             width: 100%;
             margin: 0;
         }
-
-       .bigImage {
-            min-height: 56.25vw;
+        .bigImage {
+            height: 56.25vw;
             width: 100vw;
         }
-
         .videoWrapper {
             float: none;
             clear: both;
@@ -43,14 +29,27 @@ page-productDetails {
             width: 100%;
             height: 100%;
         }
-        .fab-shop {
+        .fab-guider {
             position: absolute;
             bottom: -3.8em;
             right: 1.0em;
             z-index: 50;
             float: right;
-            overflow: hidden;
+            overflow: visible;
             background-color: transparent;
+        }
+        .roundGuiderButton{
+          height: 3.2em;
+          width: 3.2em;
+          border-radius: 1.6em;
+          object-fit: cover;
+        }
+        ion-avatar  img {
+          max-width: 3.2em;
+          max-height: 3.2em;
+            width: 3.2em;
+            height: 3.2em;
+            border-radius: 1.6em;
         }
         .fab-favorite {
             position: absolute;

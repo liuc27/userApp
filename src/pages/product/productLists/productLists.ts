@@ -7,10 +7,9 @@ import { ProductListsPop1 } from "./popoverPages/productListsPop1";
 import { ProductListsPop2 } from "./popoverPages/productListsPop2";
 import { ProductListsPop3 } from "./popoverPages/productListsPop3";
 import { ProductDetails } from './productDetails/productDetails';
-import { ShopDetails } from '../../shop/shopDetails/shopDetails';
+import { GuiderDetails } from '../../guider/guiderDetails/guiderDetails';
 import { ModalContentPage } from "./modalPages/modalContent";
-
-import { getSelectedProductLists } from '../../providers/productLists-GetSelectedProductLists-service/productLists-GetSelectedProductLists-service';
+import { ProductService } from '../../providers/product-getAllProducts-service/product-getAllProducts-service';
 import { CheckLogin } from '../../../providers/check-login'
 import { Storage } from '@ionic/storage'
 import { Http } from '@angular/http';
@@ -19,15 +18,18 @@ import 'rxjs/add/operator/map';
 @Component({
   selector: 'page-productLists',
   templateUrl: 'productLists.html',
-  providers: [getSelectedProductLists, CheckLogin]
+  providers: [ProductService, CheckLogin]
 })
 export class ProductLists {
   @ViewChild('popoverContent', { read: ElementRef }) content: ElementRef;
   @ViewChild('popoverText', { read: ElementRef }) text: ElementRef;
-  shop;
-  product;
-  productOrShop;
-  productLists;
+  guider;
+  category;
+  title
+  productOrGuider;
+  products:any = [];
+  product:any;
+  start = 0
   grid = [
     {},
     {},
@@ -38,10 +40,7 @@ export class ProductLists {
     speed: 450
   };
   alreadyLoggedIn = false;
-  validation = {
-    username: undefined,
-    password: undefined
-  };
+  validation : any = {};
   searchFilter = {
     pickUp: false,
     callSupport: false,
@@ -51,6 +50,7 @@ export class ProductLists {
     startTime: new Date().toISOString(),
     endTime: new Date(Date.now() + 86400000 * 3).toISOString()
   }
+  infiniteScrollEnd = false
 
   constructor(private params: NavParams,
     private nav: NavController,
@@ -60,12 +60,14 @@ export class ProductLists {
     private http: Http,
     public storage: Storage,
     public checkLogin: CheckLogin,
-    public productListsService: getSelectedProductLists) {
-    this.product = params.data.product;
-    this.productOrShop = "product";
+    public productService: ProductService) {
+    this.category = params.data.category;
+    this.productOrGuider = "product";
     console.log("params.data");
-    this.loadSelectedProductLists();
-    this.shop = params.data.product;
+        console.log(params.data);
+        console.log(this.category)
+    this.title = params.data.name
+    this.loadProducts();
     this.popover = popover;
     this.checkLogin.load()
       .then(data => {
@@ -90,13 +92,20 @@ export class ProductLists {
     modal.present();
   }
 
-  loadSelectedProductLists() {
-    this.productListsService.load(this.params)
+  loadProducts() {
+  return new Promise(resolve => {
+      this.productService.load(this.start,this.category,null)
       .then(data => {
-        this.productLists = data;
-        console.log("this.productLists");
+        console.log("data")
+        console.log(data)
+        if(Object.keys(data).length==0){
+          this.start-=20
+        }
+          this.products = this.products.concat(data);
+        resolve(true);
       });
-  }
+    });
+    }
 
   presentProductListsPop1Popover(ev) {
     let productListsPop1 = this.popover.create(ProductListsPop1, {
@@ -141,15 +150,19 @@ export class ProductLists {
 
 
   alreadyLiked(product) {
+        if(this.validation == undefined){
+      return false;
+    }else {
     if (this.validation.username == undefined) {
       return false
     } else if (product.likedBy.indexOf(this.validation.username) >= 0) {
-      // console.log("posessed")
+       console.log("posessed")
       // console.log(product.likedBy.indexOf(validation.username))
       return true
     } else {
       //console.log("not exist")
       return false
+    }
     }
   }
 
@@ -158,13 +171,13 @@ export class ProductLists {
       alert("login before use,dude")
     } else {
       var likedProduct = {
-        name: product.name,
+        _id: product._id,
         username: this.validation.username,
         password: this.validation.password
       }
       console.log(product.likedBy);
 
-      this.http.post('http://120.24.168.7:8080/api/likeProduct', likedProduct)
+      this.http.post('http://localhost:8080/api/likeProduct', likedProduct)
         .map(res => res.json())
         .subscribe(data => {
           // we've got back the raw data, now generate the core schedule data
@@ -177,28 +190,63 @@ export class ProductLists {
           var flag = data.data
           if (flag == "push") {
             product.likedBy.push(this.validation.username);
-          } else if (flag == "pull") {
+            this.validation.likedProduct.push(product._id)
+            this.checkLogin.updateLikedProduct(this.validation.likedProduct)
+            } else if (flag == "pull") {
 
             var index = product.likedBy.indexOf(this.validation.username);
             if (index > -1) {
               product.likedBy.splice(index, 1);
             }
-          }
+
+            var index2 = this.validation.likedProduct.indexOf(product._id);
+            if (index2 > -1) {
+              this.validation.likedProduct.splice(index2, 1);
+            }
+            console.log(this.validation)
+            this.checkLogin.updateLikedProduct(this.validation.likedProduct)
+            }
           console.log(product.likedBy);
 
         });
     }
   }
 
-  openShopDetailsPage(product) {
-    this.http.post('http://120.24.168.7:8080/api/findCreator', product)
-      .map(res => res.json())
-      .subscribe(data => {
-        // we've got back the raw data, now generate the core schedule data
-        // and save the data for later reference
-        this.nav.push(ShopDetails, data);
-
-      });
+  openGuiderDetailsPage(product) {
+            product.from = "productListPage"
+            this.nav.push(GuiderDetails, product);
   }
 
+  doInfinite(infiniteScroll: any) {
+    if (this.infiniteScrollEnd === false) {
+      console.log('doInfinite, start is currently ' + this.start);
+      this.start += 20;
+
+      this.loadProducts().then(data => {
+        setTimeout(() => {
+          console.log('Async operation has ended');
+          infiniteScroll.complete();
+          if (Object.keys(data).length == 0) {
+            console.log("true")
+            this.infiniteScrollEnd = true
+          }
+        }, 1000);
+      });
+    } else {
+      infiniteScroll.complete();
+    }
+  }
+
+   doRefresh(refresher) {
+     console.log('Begin load', refresher);
+
+     setTimeout(() => {
+       console.log('Async loading has ended');
+       this.products = []
+       this.start = 0
+       this.loadProducts();
+
+       refresher.complete();
+     }, 1000);
+   }
 }

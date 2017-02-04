@@ -11,28 +11,18 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ProductService {
   data: any;
+  perpage:number = 20;
 
   constructor(private http: Http) {
-    this.data = null;
+    this.data = [];
   }
 
-  load() {
-    if (this.data) {
-      // already loaded data
-      return Promise.resolve(this.data);
-    }
-
-    // don't have the data yet
+  load(start:number,category:String,guiderName:String) {
     return new Promise(resolve => {
-      // We're using Angular Http provider to request the data,
-      // then on the response it'll map the JSON data to a parsed JS object.
-      // Next we process the data and resolve the promise with the new data.
-      this.http.get('http://120.24.168.7:8080/api/product')
+      this.http.get('http://localhost:8080/api/products?limit='+this.perpage+'&skip='+start+'&category='+category+'&guiderName='+guiderName)
         .map(res => res.json())
         .subscribe(data => {
-          // we've got back the raw data, now generate the core schedule data
-          // and save the data for later reference
-
+          console.log(data)
           this.data = data;
           resolve(this.data);
         });

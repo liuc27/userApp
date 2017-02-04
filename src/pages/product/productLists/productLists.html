@@ -1,19 +1,22 @@
 <ion-header>
-    <ion-navbar>
+  <ion-navbar>
 
-        <ion-title>ProductLists Page</ion-title>
+    <ion-title>{{title}}</ion-title>
 
-        <ion-buttons end class="rightNavButton">
+    <!--<ion-buttons end class="rightNavButton">
             <button ion-button>
         <ion-icon name="search"></ion-icon>
       </button>
-        </ion-buttons>
-    </ion-navbar>
+        </ion-buttons>-->
+  </ion-navbar>
 </ion-header>
 
-<ion-content #popoverContent class="productLists">
-
-    <ion-item>
+<ion-content #popoverContent>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <!-- <ion-item>
         <ion-label>Start Time</ion-label>
         <ion-datetime min=2016 max=2020 displayFormat="YYYY/MM/DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="searchFilter.startTime"></ion-datetime>
     </ion-item>
@@ -26,60 +29,61 @@
     <ion-toolbar class="listsToolbar" (tap)="openModal({charNum: 0})">
         filter
         <ion-icon name="arrow-down-outline"></ion-icon>
-    </ion-toolbar>
+    </ion-toolbar> -->
 
 
-    <div class="product">
+  <ion-list [virtualScroll]="products" [approxItemHeight]="'260px'" no-lines no-paddings>
+    <div *virtualItem="let product">
+      <!-- <ion-slides [options]="mySlideOptions"> -->
+      <div style="position: relative;">
+        <a (tap)="openProductDetailsPage(product)">
+          <ion-img class="bigImage" [src]="product.imageURL"></ion-img>
+        </a>
+        <a class="fab-favorite" (tap)="likeProduct(product)">
+          <ion-icon name='heart-outline' [hidden]='alreadyLiked(product)'></ion-icon>
+          <ion-icon name='heart' [hidden]='!alreadyLiked(product)' style="color:pink"></ion-icon>
+        </a>
 
-        <ion-list *ngFor="let product of productLists" approxItemHeight="50px">
+        <div class="fab-time">
+          <ion-icon name='time-outline'></ion-icon>
+          <span class="fab-time-text">{{product.time}}分</span>
+        </div>
 
-            <ion-card class="adv-map">
-                <div>
-                    <!-- <ion-slides [options]="mySlideOptions"> -->
-                    <div style="position: relative">
-                        <a (tap)="openProductDetailsPage(product)">
-                            <img class="bigImage" [src]="product.imageURL">
-                        </a>
-                        <a class="fab-favorite" (tap)="likeProduct(product)">
-                            <ion-icon name='heart-outline' [hidden]='alreadyLiked(product)'></ion-icon>
-                            <ion-icon name='heart' [hidden]='!alreadyLiked(product)' style="color:pink"></ion-icon>
-                        </a>
+        <a class="fab-guider" (tap)="openGuiderDetailsPage(product)">
+          <ion-avatar>
+            <ion-img class="roundGuiderButton" [src]="product.guiderImageURL"></ion-img>
+          </ion-avatar>
+        </a>
 
-
-                        <!--<div class="feature"></div>-->
-                        <!--<ion-row>
-              <ion-col width-33 *ngFor="let menuItem of grid" >
-                <div class="fab-time">
-                  <ion-icon name='time-outline'></ion-icon>
-                  <span class = "fab-time-text">student</span>
-                </div>
-              </ion-col>
-            </ion-row>-->
-                        <ion-row *ngFor="let menuItem of grid">
-                            <div class="fab-time">
-                                <div class="fab-time-text">student</div>
-                            </div>
-                        </ion-row>
-
-
-                        <a class="fab-shop" (tap)="openShopDetailsPage(product)">
-                            <ion-avatar>
-                                <img [src]="product.creatorImageURL">
-                            </ion-avatar>
-                        </a>
-                    </div>
-
-                    <ion-item class="cardIntroduction">
-                        <span item-left>{{product.productName}}</span>
-                        <span>{{product.creatorName}}</span>
-                    </ion-item>
-                </div>
-            </ion-card>
-
-        </ion-list>
+        <div class="cardIntroduction">
+          <span item-left>{{product.productName}}</span>
+          <span>{{product.guiderName}}</span>
+          <span>{{product.pricing}}</span>
+        </div>
+      </div>
     </div>
-    <a href="skype:live:k321321?call">Call</a> artist
-    <!--<div #popoverText class="text-to-change">
-    <div> testData</div>
-  </div>-->
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <!--<ion-item>
+
+        <ion-thumbnail item-left (tap)="openProductDetailsPage(product)">
+          <img [src]="product.imageURL">
+        </ion-thumbnail>
+
+        <h2 (tap)="openProductDetailsPage(product)">
+          {{product.productName}} {{product.guiderName}}
+        </h2>
+        <p (tap)="openProductDetailsPage(product)">{{product.introduction}}</p>
+        <button ion-button clear item-right>
+                  <a class="fab-favorite" (tap)="likeProduct(product)">
+                    <ion-icon name='heart-outline' [hidden]='alreadyLiked(product)'></ion-icon>
+                    <ion-icon name='heart' color='positive' [hidden]='!alreadyLiked(product)' style="color:pink" ></ion-icon>
+      </a>
+        </button>
+      </ion-item>-->
+
+  </ion-list>
+  <!--<a href="skype:live:k321321?call">Call</a> guider-->
+
 </ion-content>
